@@ -1,0 +1,226 @@
+* Planner Org Freundschaft
+POF is a bunch of settings and some code to help me convert Planner
+files to Org files. These are my notes about using POF as well as
+background about my planning habits.
+
+** background
+Planner[fn:1] has served me well for many years. Now I need a couple of Org[fn:2]
+features so I'm converting my Planner directory to Org. Both systems
+are based on Outline mode, so conversion isn't too painful so far.
+
+I have used a loose text file system since the mid-nineties. Many of
+those files were never converted properly to Planner. This means that
+pof has a lot of code geared towards converting badly formated files
+to Org. 
+
+For some forgotten reason I found it amusing to write my
+very early notes as letters to myself, and use "findings" in the file
+names.
+
+Earlier than the Findings system I used up a lot of paper doing
+research notes and stuff. I use my Emsane.el[fn:3] project to scan
+these notes. 
+
+99.99% of my many amazing plans never come
+to fruition but writing down ideas at least lets me move on to other
+ideas rather than having random stuff bouncing about in my brain. I
+use note-writing as a kind of swap-space one might say.
+
+Spending too much time planning rather than producing is essentialy a
+form of procrastination. I use my zen-mode.el[fn:4] project to manage other
+forms of procrastination and try to accept planning as the least
+wasteful form.
+
+Another thing that always frustrated me with Planner was the lack
+of a visual mind-map overview. I use my project Inkmacs[fn:5] for that
+now. 
+*** Why Org over planner then?
+At the outset I just needed property drawers for my Inkmacs[fn:5]
+project. I was quite wary of converting because I thought Planner
+served me quite well. In the end it became an interesting challenge
+and so far I've been able to convert incrementally slowly gaining new
+improvements in my planning workflow.
+
+** converting Planner tasks to Org todos
+(global-set-key [f6] 'pof-convert-next-planner-task)
+
+It tries its best to figure out closing dates for closed tasks but
+often it has to guess. If the close dates are important to you be
+extra vigilant in checking the dates.
+
+also note that there is a difference between converting on a day page
+or a project page.
+
+** merging many org files
+There didn't seem to be any support in Org to merge files:
+http://www.mail-archive.com/emacs-orgmode@gnu.org/msg36652.html
+
+Im not so concerned with performance but I do want a structure that is
+easy to navigate. The Planner structure I have has too many files and
+I need to merge a number of them in a controlled manner.
+
+I use pof-merge-dired-files for my merges. I select files in dired and
+select the output buffer. Input files are demoted before the
+merge. Headers are constructed so the structure isn't lost.
+
+*** day pages
+ive got so many day pages now so ins unwieldy. they shall be converted
+to org and merged.
+
+This went rather well with pof-merge-dired-files and some of the
+cleanup support I made. Its a lot of manual work but not too bad even
+for 2K files.
+
+*** what to merge?
+its kind of difficult to see how to convert my existing structure to
+org. With planner i had gazilionz of rathr unstructured files and used
+rgrep a lot. this works surprisingly well. its not hard to enter
+information and its not hard to find, to a point.
+
+with org im aiming to improve the hierarchichal dimension and use tags
+for the linking.
+
+i still find it pretty agonizing to merge files. not because its
+difficult but because its hard to decide the hierarchies.
+
+
+
+** more priorities
+In planner I used priorities ABC. I wound up with too much being
+priority A. With Org I changed to allow more priorities then I down
+shifted all task priorities one step with this macro:
+<S-down>		;; org-shiftdown
+<down>
+
+Then I shifted up the few real A tasks I have.
+
+** calendar
+im used to keeping my schedule in planner day pages. sooo 
+org-agenda-diary-file should point to journal.org?
+
+importing icalendar events from emails seem to require to use the
+diary file as well. hmm.
+
+in org you can scedule a meeting in any file.
+
+** agenda auxiliary information
+An agenda can be seen as an aid for making decisions.
+Your schedule and task priorities are useful information.
+Sometimes it is useful to knew other things in order to set
+priorities.
+
+- How much money you have on the bank can be interesting in order to
+  know if you can place that order you planned
+- The weather might affect your day planning
+- Your location might decide what errands to do
+*** DONE motd
+    CLOSED: [2011-04-17 Sun 01:07]
+I usually have a scary motd in my todo list "TIME IS RUNNING OUT".
+I implemented it for my custom org agenda with  pof-agenda-motd.
+So, a fortune so I'm motivated to read the agenda, then the scariness.
+
+**** DONE [#A] TIME IS RUNNING OUT
+     CLOSED: [2011-04-15 Fri 01:46]
+**** DONE [#C] motd rather than moving forward motivational task
+     CLOSED: [2011-04-15 Fri 01:46]
+*** TODO [#C] financial agenda 
+Inspired by the easy setup of my custom agenda I want a financial
+agenda that will show financial todos and also show account balances.
+Of course banks don't offer convenient API:she by default but I had
+success with reading the expense account other work at least. I think
+bank account information can be scraped anyway.
+
+*** TODO location
+query the gps and match task tags
+
+*** TODO [#B] weather
+http://www.emacswiki.org/emacs/EmacsWeather
+shew weather in block agenda
+
+
+* random things I had somewhat working in Planner
+** TODO emms org integration
+literate dj.
+its simply a playlist in org format.
+
+** TODO org erc
+** TODO org pdf 
+** TODO jdbc urls
+
+
+* Emacs address books
+there are many options. ive been usin bbdb together with planner a lot but its not shiny
+anymore, and it cant be included in Emacs.
+IMHO it would be nice if ot least abook and org-contacts could cooperate.
+** org addressbook
+keep contacts in an org file. this solution seems very interesting.
+http://julien.danjou.info/org-contacts.html
+
+it would be nice to be able to keep contacs in the different project
+files because i do that a lot already because of old habits. but sadly
+it seems too slow to use org-contacts this way. A compromise might be
+possible by making an explicit list of files to search by greping the
+org files once in a while.
+
+
+*** TODO convert bbdb to org
+could maybe be done with a customer bbdb layout
+** abook
+use standard vcards which is nice.
+** bbdb
+*** DONE [#B] add bbdb on outgoing email
+    CLOSED: [2005-12-21 Wed]
+http://www-verimag.imag.fr/~moy/emacs/moy-bbdb.el
+
+
+* DONE org-emmental.el
+  CLOSED: [2012-03-07 Wed 13:30]
+remember webcam snapshots in org with capture.
+
+* Footnotes
+I'm pretty new to Org. Hey, footnotes are cool!
+[fn:1] Planner
+[fn:2] Org
+[fn:3] Emsane
+[fn:4] Zen
+[fn:5] Inkmacs
+
+* TODO git backup of org
+** a magit approach
+see (pof-org-checkin )
+** a shell script
+http://doc.norang.ca/org-mode.html#sec-18_1
+#!/bin/sh
+# Add org file changes to the repository
+REPOS="org doc.norang.ca www.norang.ca"
+
+for REPO in $REPOS
+do
+    echo "Repository: $REPO"
+    cd ~/git/$REPO
+    # Remove deleted files
+    git ls-files --deleted -z | xargs -0 git rm >/dev/null 2>&1
+    # Add new files
+    git add . >/dev/null 2>&1
+    git commit -m "$(date)"
+done
+
+.gitignore
+core
+core.*
+*.html
+*~
+.#*
+\#*\#
+*.txt
+*.tex
+*.aux
+*.dvi
+*.log
+*.out
+*.ics
+*.pdf
+*.xml
+*.org-source
+*.png
+*.toc
