@@ -1,13 +1,13 @@
 ;
 ;(setq Info-default-directory-list 
-;      (cons "/home/joakim/.elisp/emacs-planner/muse/" Info-default-directory-list))
+;      (cons "/home/joakim/.emacs.d/jave/emacs-planner/muse/" Info-default-directory-list))
 (setq Info-default-directory-list 
-      (cons "~/.elisp/emacs-planner/planner/" Info-default-directory-list))
+      (cons "~/.emacs.d/jave/emacs-planner/planner/" Info-default-directory-list))
 (setq Info-default-directory-list 
-      (cons "~/.elisp/emacs-planner/remember/" Info-default-directory-list))
+      (cons "~/.emacs.d/jave/emacs-planner/remember/" Info-default-directory-list))
 
-(my-add-subdirs-to-list (expand-file-name "~/.elisp/emacs-planner/") 'load-path)
-;(my-add-subdirs-to-list (expand-file-name "~/.elisp/emacs-planner/muse/") 'load-path)
+(my-add-subdirs-to-list (expand-file-name "~/.emacs.d/jave/emacs-planner/") 'load-path)
+;(my-add-subdirs-to-list (expand-file-name "~/.emacs.d/jave/emacs-planner/muse/") 'load-path)
 (require 'planner)
 (require 'muse)
 ;;;;;;;,

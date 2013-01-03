@@ -9,6 +9,7 @@
 
 (setq org-directory  "~/Plans")
 (setq org-agenda-files '("~/Plans"))
+(setq org-use-speed-commands t)
 
 (defvar org-journal-file (concat org-directory "/journal.org")
   "Path to OrgMode journal file.")
@@ -23,14 +24,18 @@
 ;;try having deadlines in the agenda only
 (setq org-agenda-todo-ignore-with-date t)
 
-(defun pof-agenda-motd (msg)
-  ( org-prepare-agenda)
+(defun pof-agenda-motd (arg)
+  ( org-agenda-prepare)
   (call-process-shell-command "fortune" nil t)
-  (insert msg))
+  (insert "-----------------------\n")
+  (mapcar (lambda (x) (insert x "\n")) (mapcar (lambda (x) (nth (random (length x)) x))  pof-demotivators))
+  (insert "-----------------------\n"))
+
+(defcustom pof-demotivators  '( ( "time is running out")) "scary messages to keep you alert")
 
 (setq org-agenda-custom-commands
       '(("o" "Agenda and tasks"
-         ((pof-agenda-motd "TIME IS RUNNING OUT")
+         ((pof-agenda-motd)
           (agenda "")
           (todo "")))))
 
@@ -346,4 +351,26 @@ See `bbdb-display-layout-alist' for more."
   (magit-status org-directory)
   (magit-stage-all)
   (magit-log-edit)
+  (insert "daily churn")
 )
+
+(defun pof-git-autocommit ()
+  (when (eq major-mode 'org-mode)
+      (shell-command "git commit -a -m 'Org Auto commit.'")))
+
+(defun pof-git-autocommit-mode ()
+  (interactive)
+  "minor mode to enable for autocommitting of org files"
+  (add-hook 'after-save-hook 'pof-git-autocommit))
+
+
+
+;;;;;;;;;
+;;org-pommodoro support
+;;moved to zen-mode.el
+;; (add-to-list 'org-modules 'org-timer)
+;; (setq org-timer-default-timer 25)
+
+;; (add-hook 'org-clock-in-hook '(lambda () 
+;;       (if (not org-timer-current-timer) 
+;;       (org-timer-set-timer '(16)))))
