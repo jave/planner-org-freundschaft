@@ -10,7 +10,7 @@
 (setq org-directory  "~/Plans")
 (setq org-agenda-files '("~/Plans"))
 (setq org-use-speed-commands t)
-
+(setq org-confirm-babel-evaluate nil)
 (defvar org-journal-file (concat org-directory "/journal.org")
   "Path to OrgMode journal file.")
 
@@ -355,7 +355,9 @@ See `bbdb-display-layout-alist' for more."
 )
 
 (defun pof-git-autocommit ()
-  (when (eq major-mode 'org-mode)
+  (when (and  (eq major-mode 'org-mode)
+              (buffer-file-name)
+              (string-match (expand-file-name org-directory) (buffer-file-name)))
       (shell-command "git commit -a -m 'Org Auto commit.'")))
 
 (defun pof-git-autocommit-mode ()
