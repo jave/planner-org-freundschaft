@@ -1,115 +1,11 @@
 ;;;;;;;;;;;;;;;;;;
 ;;planner-org-freundshaft
 
-(require 'org-contacts)
 
-(setq org-log-done 'time)
-(setq org-todo-keywords
-      '((sequence "TODO"  "|" "DONE" "CANCELLED")))
+;;these are the keybindings im used to cenverted to org:
 
-(setq org-directory  "~/Plans")
-(setq org-agenda-files '("~/Plans"))
-(setq org-use-speed-commands t)
-(setq org-confirm-babel-evaluate nil)
-(defvar org-journal-file (concat org-directory "/journal.org")
-  "Path to OrgMode journal file.")
-
-(defvar org-task-file (concat org-directory "/TaskPool.org"))
-(setq org-default-notes-file org-journal-file)
-
-;; i have gazillions of tasks so try making the agenda view shorter
-;; by folding subtasks
-(setq org-agenda-todo-list-sublevels nil)
-
-;;try having deadlines in the agenda only
-(setq org-agenda-todo-ignore-with-date t)
-
-(defun pof-agenda-motd (arg)
-  ( org-agenda-prepare)
-  (call-process-shell-command "fortune" nil t)
-  (insert "-----------------------\n")
-  (mapcar (lambda (x) (insert x "\n")) (mapcar (lambda (x) (nth (random (length x)) x))  pof-demotivators))
-  (insert "-----------------------\n"))
-
-(defcustom pof-demotivators  '( ( "time is running out")) "scary messages to keep you alert")
-
-(setq org-agenda-custom-commands
-      '(("o" "Agenda and tasks"
-         ((pof-agenda-motd)
-          (agenda "")
-          (todo "")))))
-
-(setq  org-highest-priority 65
-       org-lowest-priority  69
-       org-default-priority 67)
-
-;; (defvar org-journal-date-format "%Y-%m-%d"
-;;   "Date format string for journal headings.")
-;; ;  (define-key global-map "\C-cc" 'org-capture)
-
-
-;; (defun org-journal-entry ()
-;;   "Create a new diary entry for today or append to an existing one."
-;;   (interactive)
-;;   (switch-to-buffer (find-file org-journal-file))
-;;   (widen)
-;;   (let ((today (format-time-string org-journal-date-format)))
-;;     (beginning-of-buffer)
-;;     (unless (org-goto-local-search-headings today nil t)
-;;       ((lambda () 
-;;          (org-insert-heading)
-;;          (insert today)
-;;          (insert "\n")
-;;          )))
-;;     (beginning-of-buffer)
-;;     (org-show-entry)
-;;     (org-narrow-to-subtree)
-;;     (end-of-buffer)
-;;     ;(backward-char 2)
-;;     (insert "\n")
-;;     ;(unless (= (current-column) 2)        )
-;;     ))
-
-
-;;these are the keybindings im used to cenverted to org
-  
-(global-set-key (kbd "<f9> p") 'org-capture)
-(global-set-key (kbd "<f9> a") 'org-agenda)
-
-(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
-(global-set-key "\C-cl" 'org-store-link)
-;;(global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-cb" 'org-iswitchb)
-
-
-(setq org-capture-templates 
-      '(("a" "Appointment" entry (file+headline org-journal-file "Calendar") 
-         "* APPT %^{Description} %^g
-%?
-Added: %U")
-        
-        ("n" "Notes" entry (file+datetree org-journal-file) 
-         "* %^{Description} %^g %? 
-Added: %U")
-
-        ("t" "Task Diary" entry (file+datetree org-task-file) 
-         "* TODO %^{Description}  %^g
-%?
-Added: %U")
-
-        ("j" "Journal" entry (file+datetree org-journal-file) 
-         "** %^{Heading}")
-
-        ("l" "Log Time" entry (file+datetree org-journal-file ) 
-         "** %U - %^{Activity}  :TIME:")
-        
-        ("c" "Contacts" entry (file (concat org-directory "/Contacts.org"))
-         "* %(org-contacts-template-name)
- :PROPERTIES:
- :EMAIL: %(org-contacts-template-email)
- :END:")))
-
-
+;;(global-set-key (kbd "<f9> p") 'org-capture)
+;;(global-set-key (kbd "<f9> a") 'org-agenda)
 
 
 (defun pof-planner-task-to-org-task ()
@@ -169,8 +65,6 @@ Added: %U")
   ;;(date-to-time (concat (pof-guess-task-date) " 00:00"))                     
   (replace-regexp-in-string "\\." "-" (muse-path-sans-extension (muse-page-name))))
 
-(setq  org-refile-use-outline-path 'file)
-(setq org-refile-targets '((org-agenda-files . (:level . 1))))
 
 (defun pof-demote-buffer ()
   (interactive)
@@ -217,7 +111,6 @@ Added: %U")
       (replace-match "\\2" nil nil)
       (beginning-of-line))))
 
-(setq  org-contacts-files (list (concat org-directory "/Contacts.org")))
 ;;for slurping bbdb to org. The code is mostly just pinched from bbdb and
 ;; modified to produce org output rather than bbdbs usual display
 
@@ -344,35 +237,5 @@ See `bbdb-display-layout-alist' for more."
           (if (bbdb-record-notes record) (insert (bbdb-record-notes record) ))
           (insert "\n")
     ))
-;;;; backup
-(defun pof-org-checkin ()
-  "use magit to review org changes and check them in. use at least daily."
-  (interactive)
-  (magit-status org-directory)
-  (magit-stage-all)
-  (magit-log-edit)
-  (insert "daily churn")
-)
 
-(defun pof-git-autocommit ()
-  (when (and  (eq major-mode 'org-mode)
-              (buffer-file-name)
-              (string-match (expand-file-name org-directory) (buffer-file-name)))
-      (shell-command "git commit -a -m 'Org Auto commit.'")))
-
-(defun pof-git-autocommit-mode ()
-  (interactive)
-  "minor mode to enable for autocommitting of org files"
-  (add-hook 'after-save-hook 'pof-git-autocommit))
-
-
-
-;;;;;;;;;
-;;org-pommodoro support
-;;moved to zen-mode.el
-;; (add-to-list 'org-modules 'org-timer)
-;; (setq org-timer-default-timer 25)
-
-;; (add-hook 'org-clock-in-hook '(lambda () 
-;;       (if (not org-timer-current-timer) 
-;;       (org-timer-set-timer '(16)))))
+(provide 'pof)

@@ -1,4 +1,4 @@
-;
+;; this file is obsolete
 ;(setq Info-default-directory-list 
 ;      (cons "/home/joakim/.emacs.d/jave/emacs-planner/muse/" Info-default-directory-list))
 (setq Info-default-directory-list 
@@ -119,13 +119,6 @@
 (global-set-key (kbd "<f9> c") 'cfw:open-org-calendar)
 
 (global-set-key (kbd "<f9> f") 'muse-project-find-file)
-
-(autoload 'wclock "wclock" nil t)
-(global-set-key (kbd "<f9> w") 'wclock)
-
-
-
-
 
 
 ;(require 'planner-auto)
